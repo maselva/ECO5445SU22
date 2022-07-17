@@ -1,0 +1,94 @@
+---
+title: "Assignment05"
+author: "Max Selvaggio"
+date: '2022-07-16'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Number 2 Assignment 2
+
+```{r}
+Raft <- 2
+Staff <- 2.0
+Nice <- "10j"
+Goat <- "2 Cool for School"
+Jump <- "True"
+
+typeof(Raft)
+  typeof(Staff)
+  typeof(Nice)
+  typeof(Goat)
+  typeof(Jump)
+
+```
+
+Number 5 Assignment 2
+
+foobar is a function which determines if a numerical value is a multiple of 3,5, or 15.
+
+```{r}
+foobar<-function(x){
+    return(ifelse(x%%3==0 & x%%5==0, "foobar", ifelse(x%%3==0, "foo", ifelse(x%%5==0, "bar", "Not a multiple of 3, 5, or 15"))))
+}
+```
+
+Number 3
+
+```{r}
+attach(swiss)
+```
+
+Number 4
+
+```{r}
+summary(swiss)
+```
+
+Number 5  -  Herens
+
+Number 6
+
+```{r}
+cor(swiss)
+```
+
+Number 7
+
+```{r}
+plot(Education,Fertility)
+```
+
+Number 8
+
+```{r}
+hist(Catholic)
+```
+
+```{r}
+detach(swiss)
+```
+
