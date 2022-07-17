@@ -16,4 +16,6 @@ os.chdir(git_path + '\\Project\\Data\\')
 # Check that the change was successful.
 os.getcwd()
 
+
 mortgage_dataset = pd.read_csv("hmda_sw.csv", delimiter=',')
+
