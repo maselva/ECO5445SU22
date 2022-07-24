@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r packages}
-# Add any packages you want in this chunk:
+library(plotly)
+library(gvlma)
+library(car)
 ```
 
 We are going to look at the property prices for Orange County. From there we are going to try and predict the sales price by linear regression.
@@ -24,7 +26,9 @@ We are going to look at the property prices for Orange County. From there we are
 Bring in the data and make sure the data types are correct. If not, make the proper changes. The file is located within this project. *data/prop_prices_reduced.csv*
 
 ```{r}
-
+prices <- read.csv("C:\\Users\\mselv\\Documents\\GitHub\\ECO5445SU22\\Assignment06\\
+                   data\\prop_prices_reduced.csv")
+str(prices)
 ```
 
 
@@ -33,6 +37,24 @@ Bring in the data and make sure the data types are correct. If not, make the pro
 Plot histograms for all variables. Additionally, add scatterplots for the relationships between all quantitative variables.
 
 ```{r}
+hist(prices$sale_def)
+hist(prices$bed)
+hist(prices$bath)
+hist(prices$area_heated)
+hist(prices$area)
+hist(prices$dist_cbd)
+hist(prices$dist_lakes)
+hist(prices$pool)
+
+plot_ly(prices, y = ~sale_def, x = ~bed, type = 'scatter')
+plot_ly(prices, y = ~sale_def, x = ~area_heated, type = 'scatter')
+plot_ly(prices, y = ~sale_def, x = ~area, type = 'scatter')
+plot_ly(prices, y = ~sale_def, x = ~bath, type = 'scatter')
+plot_ly(prices, y = ~dist_lakes, x = ~area, type = 'scatter')
+plot_ly(prices, y = ~area_heated, x = ~bath, type = 'scatter')
+plot_ly(prices, y = ~area_heated, x = ~dist_lakes, type = 'scatter')
+plot_ly(prices, y = ~sale_def, x = ~dist_lakes, type = 'scatter')
+plot_ly(prices, y = ~sale_def, x = ~dist_cbd, type = 'scatter')
 
 ```
 
@@ -41,7 +63,15 @@ Plot histograms for all variables. Additionally, add scatterplots for the relati
 Provide basic summary statistics for univariate analysis. Also, provide the correlation between all the quantitative variables.
 
 ```{r}
+data <- prices$sale_def
+mean(data)
+median(data)
+max(data)
+min(data)
 
+quant_var <- data.frame(prices$sale_def,prices$bed,prices$bath,prices$area_heated,prices$area,
+                        prices$dist_cbd,prices$dist_lakes)
+cor(quant_var)
 ```
 
 # Regression Analysis
@@ -49,16 +79,21 @@ Provide basic summary statistics for univariate analysis. Also, provide the corr
 Run a regression with all the variables included. Print results of the regression.
 
 ```{r}
-
+model <- lm(sale_def ~ bed + bath + area_heated + area + 
+              dist_cbd + dist_lakes + pool, data = prices)
+summary(model)
 ```
 
 Which of the variables tested significant at the 95% level? Looking at the results and answering outside of the chunk is sufficient.
+Answer: bed, bath, area_heated, area, dist_cbd
 
 ## Evaluating the model
 
 As is, are any of the Gauss-Markov assumptions violated? If so, which ones? How can you fix the issues?
 
 ```{r}
+gvmodel <- gvlma(model)
+summary(gvmodel)
 
 ```
 
@@ -67,7 +102,11 @@ As is, are any of the Gauss-Markov assumptions violated? If so, which ones? How 
 Based off of your findings in the previous section, make changes to the variables, the functional form, etc.
 
 ```{r}
+outlierTest(model)
+newdata <- prices[-c(7, 37, 214), ]
 
+newmodel <- lm(sale_def ~ bed + bath + area_heated + area + 
+              dist_cbd + dist_lakes + pool, data = newdata)
 ```
 
 
@@ -84,5 +123,15 @@ Based on the following inputs, predict the deflated sales price:
 - no pool
 
 ```{r}
+Example1 <- data.frame(bed = 2,
+                   bath = 2.0,
+                   area_heated = 1223,
+                   area = 9750,
+                   dist_cbd = 19368,
+                   dist_lakes = 490,
+                   pool = 0)
+                   
 
+predict(newmodel, Example1)
+ 
 ```
