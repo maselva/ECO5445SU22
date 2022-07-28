@@ -4,85 +4,84 @@ author: "Max Selvaggio"
 date: '2022-07-16'
 output: html_document
 ---
+*JE: Would have liked to have had same YAML header with table of contents*
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+*JE: Removed unnecessary content in first page*
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Number 2 Assignment 2 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-Number 2 Assignment 2
+*JE: Adding `#` so that the sections are listed properly*
 
 ```{r}
 Raft <- 2
 Staff <- 2.0
-Nice <- "10j"
+Nice <- "10j" # Did you try without the quotes? 
 Goat <- "2 Cool for School"
-Jump <- "True"
+Jump <- "True" # Did you try without the quotes?
 
-typeof(Raft)
-  typeof(Staff)
-  typeof(Nice)
-  typeof(Goat)
-  typeof(Jump)
 
+class(Raft) # Interesting, didn't realize there was a typeof function
+typeof(Staff)
+typeof(Nice)
+class(Goat)
+typeof(Jump)
+# Fixed weird indent
 ```
 
-Number 5 Assignment 2
+# Number 5 Assignment 2
 
 foobar is a function which determines if a numerical value is a multiple of 3,5, or 15.
+
+*JE: Did not provide examples, did not run any tests, errors out if character is provided in function. (-6)*
 
 ```{r}
 foobar<-function(x){
     return(ifelse(x%%3==0 & x%%5==0, "foobar", ifelse(x%%3==0, "foo", ifelse(x%%5==0, "bar", "Not a multiple of 3, 5, or 15"))))
 }
+
+# foobar("cat") commented out to allow document run
+foobar(90)
+foobar(20)
+foobar(9)
 ```
 
-Number 3
+# Number 3
 
 ```{r}
 attach(swiss)
 ```
 
-Number 4
+# Number 4
 
 ```{r}
 summary(swiss)
+
+
 ```
 
-Number 5  -  Herens
+*JE: Didn't provide spread of data (sd or variance) (-5)*
 
-Number 6
+# Number 5  -  Herens
+
+*JE: Where is the code to show that? (-10)*
+
+# Number 6
 
 ```{r}
 cor(swiss)
 ```
 
-Number 7
+# Number 7
 
 ```{r}
 plot(Education,Fertility)
 ```
 
-Number 8
+# Number 8
 
 ```{r}
 hist(Catholic)
