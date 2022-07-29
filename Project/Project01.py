@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 os.getcwd()
 # Change to a new directory.
 git_path = 'C:\\Users\\mselv\\Documents\\GitHub\\ECO5445\\'
-os.chdir(git_path + '\\Project\\Data\\')
+git_path = 'C:/Users/jo585802/OneDrive - University of Central Florida/Documents/GitHub/ECO5445/' # Needed line to test data
+os.chdir(git_path + '\\Project\\Data')
 # Check that the change was successful.
 os.getcwd()
 
@@ -34,6 +35,17 @@ mortgage_dataset.rename(columns={'s7':'Action_Taken'},inplace=True)
 Creating a new Dataframe which contains
 the variables we want to use in our analysis
 """
+
+###############################################################################
+# Why did you choose these variables in particular? What information from the
+# paper helped you decide?
+###############################################################################
+
+###############################################################################
+# Didn't happen to notice that 999,999.4 is the designation for missing 
+# numerical data. Summary statistics will be skewed.
+###############################################################################
+
 newData = mortgage_dataset[['Applicant_race','D_to_I_Ratio_Total_Obligations','D_to_I_Ratio_Housing_Expenses','Self-employed','Marital_status','Years_of_Education','Applicant_Monthly_Employment_Income','Action_Taken']]
 newData.describe()
 
@@ -71,6 +83,12 @@ Monthly_Income = np.array(newData["Applicant_Monthly_Employment_Income"])
 
 plt.xlim(0,40)
 plt.scatter(Yrs_of_Education,Monthly_Income)
+
+###############################################################################
+# These plots do not provide details about what we are plotting
+# They need context in order to understand.
+###############################################################################
+
 """
 Using the scatterplot for reference, you can see that the beginning
 of the larger increases in monthly revenue correlate to surpassing 13 years of
@@ -115,6 +133,10 @@ portions of the table.
 Approval_table = np.array([['Black',243,96,339],['White',1852,189,2041],['Total',2095,285,2380]])
 print(Approval_table)
 
+###############################################################################
+# Missing column names
+###############################################################################
+
 """
 Number 7
 """
@@ -125,3 +147,11 @@ P_Approved_White = (((White_Applicants/2380)*(Approved_Applicants/2380))/
 P_Denied_Black = (((1-(White_Applicants/2380))*(1-(Approved_Applicants/2380)))/
                   (1-(White_Applicants/2380)))
 
+
+print(P_Approved_White)
+print(P_Denied_Black)
+
+###############################################################################
+# What we were actually looking for is the probability that a person would be
+# approved, given that we know they are white. So 1852/2041
+###############################################################################
