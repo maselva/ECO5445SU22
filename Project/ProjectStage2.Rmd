@@ -1,0 +1,24 @@
+---
+title: "Project02"
+author: "Max Selvaggio"
+date: "2022-07-31"
+output: html_document
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(root.dir = "C:\\Users\\mselv\\Documents\\GitHub\\ECO5445SU22\\Project")
+```
+
+
+```{r}
+Mdata <- read.csv("hmda_sw.csv")
+
+setnames(Mdata, old = c('s13','s46','s27a','s23a','school','s30a','s7'), 
+         new = c('Applicant Race','Debt to Income Ratio','Self-Employed','Marital Status',
+                 'Years of Education','Applicant Monthly Income','Action Taken'))
+```
+
+
