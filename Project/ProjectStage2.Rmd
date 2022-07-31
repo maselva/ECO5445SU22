@@ -9,16 +9,37 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(root.dir = "C:\\Users\\mselv\\Documents\\GitHub\\ECO5445SU22\\Project")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(data.table)
 ```
 
 
 ```{r}
+setwd("C:\\Users\\mselv\\Documents\\GitHub\\ECO5445\\Project\\Data")
 Mdata <- read.csv("hmda_sw.csv")
 
-setnames(Mdata, old = c('s13','s46','s27a','s23a','school','s30a','s7'), 
+setnames(Mdata, old = c('s13','s46','s27a','s23a','school','s17','s7'), 
          new = c('Applicant Race','Debt to Income Ratio','Self-Employed','Marital Status',
-                 'Years of Education','Applicant Monthly Income','Action Taken'))
+                 'Years of Education','Applicant Income','Action Taken'))
+
+Mdata[Mdata == 999999.4] <- NA
+
+```
+
+The variable "Action Taken" is our qualitative dependent because the approval or denial of a mortgage is the output we are attempting to predict with this model. The reason these variables were chosen is because it is important to have "variables correlated with both race's role and creditworthiness"(Page 1, "Mortgage Lending in Boston: Interpreting HMDA Data"). As the paper indicates, previous studies of how race played a part in the mortgage process did not properly include financial variables as well, and therefore the results were skewed. With these variables, we will be able to see race's affect as well as the affect of general financial measures in the mortgage approval process.
+
+```{r}
+Mdata["Applicant Race"][Mdata["Applicant Race"] == "3"] <- "Black"
+Mdata["Applicant Race"][Mdata["Applicant Race"] == "5"] <- "White"
+table(Mdata$`Applicant Race`) 
+
+#Based off the table, you see in the dataset 2041/2380 (86%) of applicants are white
+
+
+
 ```
 
 
