@@ -16,9 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(gamlr)
-library(plotly)
-library(gvlma)
-library(car)
+
 ```
 
 
@@ -49,13 +47,19 @@ summary(model)
 Number 3
 
 ```{r}
+x <- data.matrix(prices.train[, c('bed', 'bath', 'area_heated', 'area', 
+                                  'dist_cbd', 'dist_lakes')])
 
+y <- prices.train$sale_def
+ym <- as.matrix(y)
+
+Lass <- gamlr(x, log(ym), verb=TRUE)
 ```
 
 Number 4
 
 ```{r}
-
+cvLass <- cv.gamlr(x, log(ym), nfold = 10, verb=TRUE)
 ```
 
 Number 5
