@@ -16,16 +16,51 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(gamlr)
-
+library(plotly)
+library(gvlma)
+library(car)
 ```
 
 
+```{r}
+setwd("C:\\Users\\mselv\\Documents\\GitHub\\ECO5445SU22\\Assignment06\\data")
+prices <- read.csv("prop_prices_reduced.csv")
+
+```
+
+Number 1
+
+```{r}
+train <- sample(nrow(prices), 0.9*nrow(prices))
+
+prices.train <- prices[train,]
+prices.validate <- prices[-train,]
+```
+
+Number 2
+
+```{r}
+model <- lm(sale_def ~ bed + bath + area_heated + area + 
+              dist_cbd + dist_lakes + pool, data = prices.train)
+summary(model)
+
+```
+
+Number 3
 
 ```{r}
 
 ```
 
+Number 4
 
+```{r}
 
+```
 
+Number 5
+
+```{r}
+
+```
 
