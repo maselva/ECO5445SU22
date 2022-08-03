@@ -29,6 +29,7 @@ prices <- read.csv("prop_prices_reduced.csv")
 Number 1
 
 ```{r}
+set.seed(1234)
 train <- sample(nrow(prices), 0.9*nrow(prices))
 
 prices.train <- prices[train,]
@@ -42,6 +43,9 @@ model <- lm(sale_def ~ bed + bath + area_heated + area +
               dist_cbd + dist_lakes + pool, data = prices.train)
 summary(model)
 
+modelpred <- predict(model,prices.validate)
+modelactual <- prices.validate$sale_def
+
 ```
 
 Number 3
@@ -54,17 +58,33 @@ y <- prices.train$sale_def
 ym <- as.matrix(y)
 
 Lass <- gamlr(x, log(ym), verb=TRUE)
+summary(Lass)
+
+B <- coef(Lass)
+
+B <- B[-1,]
+
 ```
 
 Number 4
 
 ```{r}
 cvLass <- cv.gamlr(x, log(ym), nfold = 10, verb=TRUE)
+summary(cvLass)
+
 ```
 
 Number 5
 
 ```{r}
+log(Lass$lambda[which.min(AICc(Lass))])
+log(Lass$lambda[which.min(AIC(Lass))])
+log(Lass$lambda[which.min(BIC(Lass))])
+log(cvLass$lambda.min)
+log(cvLass$lambda.1se)
 
+
+
+sqrt(mean((modelactual - modelpred)^2))
 ```
 
