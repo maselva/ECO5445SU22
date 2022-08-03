@@ -26,8 +26,8 @@ We are going to look at the property prices for Orange County. From there we are
 Bring in the data and make sure the data types are correct. If not, make the proper changes. The file is located within this project. *data/prop_prices_reduced.csv*
 
 ```{r}
-prices <- read.csv("C:\\Users\\mselv\\Documents\\GitHub\\ECO5445SU22\\Assignment06\\
-                   data\\prop_prices_reduced.csv")
+prices <- read.csv("data\\prop_prices_reduced.csv")
+# pool is categorical, so you will need to turn that into a factor (-2)
 str(prices)
 ```
 
@@ -69,6 +69,9 @@ median(data)
 max(data)
 min(data)
 
+# What about the summary stats for the rest of the variables? (-4)
+# What about sd/var? (-5)
+
 quant_var <- data.frame(prices$sale_def,prices$bed,prices$bath,prices$area_heated,prices$area,
                         prices$dist_cbd,prices$dist_lakes)
 cor(quant_var)
@@ -97,6 +100,8 @@ summary(gvmodel)
 
 ```
 
+`I do not see explanations about the violations of the assumptions (-25)`
+
 ## New Model
 
 Based off of your findings in the previous section, make changes to the variables, the functional form, etc.
@@ -109,6 +114,8 @@ newmodel <- lm(sale_def ~ bed + bath + area_heated + area +
               dist_cbd + dist_lakes + pool, data = newdata)
 ```
 
+`Missing some sort of transformations to help. (-3)`
+`Didn't check GM assumptions after changes. (-5)`
 
 # Prediction
 
