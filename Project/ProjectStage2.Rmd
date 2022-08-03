@@ -33,7 +33,10 @@ Mdata$`Action Taken`[Mdata$`Action Taken` == 3] <- 'Denied'
 Mdata["Applicant Race"][Mdata["Applicant Race"] == "3"] <- "Black"
 Mdata["Applicant Race"][Mdata["Applicant Race"] == "5"] <- "White"
 
+Mdata["Self-Employed"][Mdata["Self-Employed"] == "0"] <- "No"
+Mdata["Self-Employed"][Mdata["Self-Employed"] == "1"] <- "Yes"
 
+Mdata$`Applicant Income` <- Mdata$`Applicant Income`*1000
 ```
 
 The variable "Action Taken" is our qualitative dependent because the approval or denial of a mortgage is the output we are attempting to predict with this model. The reason these variables were chosen is because it is important to have "variables correlated with both race's role and creditworthiness"(Page 1, "Mortgage Lending in Boston: Interpreting HMDA Data"). As the paper indicates, previous studies of how race played a part in the mortgage process did not properly include financial variables as well, and therefore the results were skewed. With these variables, we will be able to see race's affect as well as the affect of general financial measures in the mortgage approval process.
@@ -42,13 +45,16 @@ The variable "Action Taken" is our qualitative dependent because the approval or
 newdata <- data.frame(Mdata$`Action Taken`,Mdata$`Applicant Race`,Mdata$`Applicant Income`,
                       Mdata$`Self-Employed`,Mdata$`Marital Status`,Mdata$`Years of Education`,
                       Mdata$`Debt to Income Ratio`)
+summary(newdata)
 
 table(newdata$Mdata..Applicant.Race.) 
 
-#Based off the table, you see in the dataset 2041/2380 (86%) of applicants are white
+
 
 
 
 ```
 
+Notes from different graphs and summary statistics:
 
+Based off the table, you see in the dataset 2041/2380 (86%) of applicants are white.
