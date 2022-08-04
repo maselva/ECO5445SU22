@@ -92,4 +92,10 @@ sqrt(mean((modelactual - modelpred)^2))
 
 ```
 
-I am producing negative lambda values somehow. Though I cannot figure out the last part of this assignment, I assume based off the experience in class that using the lambda from AICc would create the most accurate model. I believe I am following how you showed to do the LASSO and ten-fold  functions but my predict function is not working properly. I got an error message for my "new data" which was saying I need to remove the first column, which is our y variable (sale def). However, when I remove the first column to be able to actually run the predict function, it produces 2 digit numbers which are not even close to what y should be. It does not affect my grade, but I figured explaining my problems would be better than no explanation at all.
+I am producing negative lambda values somehow. Though I cannot figure out the last part of this assignment, 
+I assume based off the experience in class that using the lambda from AICc would create the most accurate
+model. I believe I am following how you showed to do the LASSO and ten-fold  functions but my predict
+function is not working properly. I got an error message for my "new data" which was saying I need to remove
+the first column, which is our y variable (sale def). However, when I remove the first column to be able to
+actually run the predict function, it produces 2 digit numbers which are not even close to what y should be.
+It does not affect my grade, but I figured explaining my problems would be better than no explanation at all.
