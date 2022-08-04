@@ -48,7 +48,7 @@ modelactual <- prices.validate$sale_def
 
 ```
 
-Number 3
+Number 3 - Standard LASSO
 
 ```{r}
 x <- data.matrix(prices.train[, c('bed', 'bath', 'area_heated', 'area', 
@@ -60,18 +60,19 @@ ym <- as.matrix(y)
 Lass <- gamlr(x, log(ym), verb=TRUE)
 summary(Lass)
 
-B <- coef(Lass)
+prices.validatem <- prices.validate[-c(1,8)]
+test <- as.matrix(prices.validatem)
 
-B <- B[-1,]
-
+predict(Lass,test)
 ```
 
-Number 4
+Number 4 - Ten-fold Regression
 
 ```{r}
 cvLass <- cv.gamlr(x, log(ym), nfold = 10, verb=TRUE)
 summary(cvLass)
 
+predict(cvLass,test)
 ```
 
 Number 5
@@ -85,6 +86,10 @@ log(cvLass$lambda.1se)
 
 
 
+#Original Model RMSE
 sqrt(mean((modelactual - modelpred)^2))
+
+
 ```
 
+I am producing negative lambda values somehow. Though I cannot figure out the last part of this assignment, I assume based off the experience in class that using the lambda from AICc would create the most accurate model. I believe I am following how you showed to do the LASSO and ten-fold  functions but my predict function is not working properly. I got an error message for my "new data" which was saying I need to remove the first column, which is our y variable (sale def). However, when I remove the first column to be able to actually run the predict function, it produces 2 digit numbers which are not even close to what y should be. It does not affect my grade, but I figured explaining my problems would be better than no explanation at all.
