@@ -2,7 +2,8 @@
 title: "Project02"
 author: "Max Selvaggio"
 date: "2022-07-31"
-output: html_document
+output:
+ html_document:
     toc: true
     toc_float: true
     number_sections: true
@@ -18,6 +19,7 @@ library(pROC)
 library(rpart)
 library(rpart.plot)
 library(gamlr)
+library(e1071)
 ```
 
 
@@ -83,6 +85,7 @@ summary(model)
 
 ```
 
+Original model set at 0.5
 
 ```{r}
 prob <- predict(model, newdata.validate, type = 'response')
@@ -101,6 +104,7 @@ my_auc <- auc(my_roc)
 
 ```
 
+Adjusted model using the threshold value
 
 ```{r}
 threshold <- my_roc$thresholds[which.max(my_roc$sensitivities + my_roc$specificities)]
@@ -120,15 +124,102 @@ model.perf.thresh
 When the threshold was put at 0.5, the model produced a really good number of true approvals, but also yielded 75 false positives (approvals). The threshold taken from the ROC curve was used and produced many more false negatives (predicting denied when actually approved), but limited the false positives (predicting approved when actually denied), reducing them from 75 to 42. Similar to our breast cancer example from class, I think we would prefer the higher number of false negatives rather than false positives, which give applicants unwarranted hope.
 
 
+Classical Decision Tree
+
 ```{r}
+set.seed(1234)
 
-x <- data.matrix(newdata.train[, c('Applicant Race', 'Applicant Income', 'Marital Status', 'Self-Employed', 
-                                  'Debt to Income Ratio', 'Years of Education')])
+dtree <- rpart(`Action Taken` ~., data = newdata.train, method = 'class', parms = list(split = 'information'))
 
-y <- newdata.train$`Action Taken`
+prp(dtree, type = 2, extra = 104,fallen.leaves = T)
 
-cv.model <- cv.gamlr(x, y, 
-	family="binomial", nfold = 10, verb=TRUE)
+dtree.pred <- predict(dtree, newdata.validate,type = "class")
+
+dtree.perf <- table(newdata.validate$`Action Taken`, dtree.pred, dnn = c("Actual","Predicted"))
+
+dtree.perf
 ```
 
+The classical decision tree model is very similar to the original model. It produced a high number of actual approvals, but also had 77 false approvals. 
 
+
+Pruned Decision Tree
+
+```{r}
+plotcp(dtree)
+
+dtree$cptable
+
+dtree.pruned <- prune(dtree,cp = 0.018)
+
+prp(dtree.pruned, type = 2, extra = 104,fallen.leaves = T)
+
+dtree.pruned.pred <- predict(dtree.pruned, newdata.validate,type = "class")
+
+dtree.pruned.perf <- table(newdata.validate$`Action Taken`, dtree.pruned.pred, dnn = c("Actual","Predicted"))
+
+dtree.pruned.perf
+```
+
+Once again with the pruned decision tree, 3 out of the 4 sections were accurate, especially true approvals were the highest they have been (620). However, the false approvals were also at a high compared to other models with 82. As we discussed earlier, we are looking for a model that reducing false approvals in order to limit giving applicants unwarranted confidence in the mortgage process. The small increase in accurate approvals is probably not enough to use this model as the best one.
+
+
+Support Vector Machine
+
+```{r}
+set.seed(1234)
+
+fit.svm <- svm(`Action Taken` ~., data=newdata.train)
+
+fit.svm
+
+svm.pred <- predict(fit.svm,na.omit(newdata.validate))
+
+svm.perf <- table(na.omit(newdata.validate)$`Action Taken`, svm.pred, dnn = c("Actual","Predicted"))
+
+svm.perf
+
+```
+
+The support vector machine produced an almost equivalent number of false approvals, but it also resulted in 0 false denials which is a definite improvement compared to the other models tested.
+
+
+While evaluating the different models, it is apparent that the inaccurate predicted approvals is something that will always be there. Therefore, I would select the SVM model as it has the second highest actual approvals and also brought the false denials to zero.
+
+
+```{r}
+set.seed(1234)
+
+fit.svm.full <- svm(`Action Taken` ~., data=newdata)
+
+fit.svm.full
+
+svm.pred.full <- predict(fit.svm.full,na.omit(newdata))
+
+svm.perf.full <- table(na.omit(newdata)$`Action Taken`, svm.pred.full, dnn = c("Actual","Predicted"))
+
+svm.perf.full
+
+
+#my_roc.full <- roc(newdata$`Action Taken` ~ svm.pred.full, plot = TRUE)
+
+#my_auc.full <- auc(my_roc.full)
+
+#Tried all different variations but could not get the ROC curve to work for this model.
+```
+
+Report:
+
+In the first couple of sections, I simply was setting up the data and performing the basic logistic regression on the data. Splitting the data into train and validate allows us to do just that, train the different models and the test the model's prediction accuracy using the validate data. I tested our different prediction methods with the training data, and it resulted with the following tables.
+
+```{r}
+model.perf
+model.perf.thresh
+dtree.perf
+dtree.pruned.perf
+svm.perf
+
+svm.perf.full
+```
+
+The results above demonstrate the difference between the actual and predicted outcomes. The numbers in the top right and bottom left are the errors as they represent the incorrect approval and denial predictions. As a whole, the models were fairly similar apart from the original model that used the threshold from the ROC curve. I discussed the issues throughout, and it is again apparent when reviewing the results of the final SVM model using the full data sample. The confusion matrix it produced was solid all around, especially when it came to accurate approvals. However, the weakness lies in the false approval, which are scenarios that predict approval for the applicant but actually resulted in a denial. Though the model had the noticeable fault, the correct predictions it was able to produce was substantial, with an accuracy of 86.6% (2061/2380).
